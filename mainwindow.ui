@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>810</width>
-    <height>636</height>
+    <height>666</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,6 +15,20 @@
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout">
+    <item row="7" column="1">
+     <widget class="QLabel" name="degrees1">
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </item>
+    <item row="8" column="1">
+     <widget class="QLabel" name="degrees2">
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </item>
     <item row="6" column="2">
      <widget class="QLineEdit" name="div1">
       <property name="text">
@@ -123,6 +137,9 @@
       </property>
      </widget>
     </item>
+    <item row="2" column="3">
+     <widget class="QLineEdit" name="lineEdit_3"/>
+    </item>
     <item row="5" column="4">
      <widget class="QLabel" name="label_8">
       <property name="text">
@@ -130,10 +147,62 @@
       </property>
      </widget>
     </item>
+    <item row="3" column="3">
+     <widget class="QLineEdit" name="lineEdit_4"/>
+    </item>
     <item row="1" column="2">
      <widget class="QCheckBox" name="checkBox_2">
       <property name="text">
        <string>Инвертировать</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="2">
+     <widget class="QLabel" name="label_10">
+      <property name="text">
+       <string>TextLabel</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="2">
+     <widget class="QLabel" name="label_9">
+      <property name="text">
+       <string>TextLabel</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="4">
+     <widget class="QPushButton" name="measureAngleButton">
+      <property name="text">
+       <string>Замер наклона</string>
+      </property>
+     </widget>
+    </item>
+    <item row="8" column="0">
+     <widget class="QLabel" name="val1">
+      <property name="text">
+       <string>ch3</string>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="0">
+     <widget class="QLabel" name="val2">
+      <property name="text">
+       <string>ch1</string>
+      </property>
+     </widget>
+    </item>
+    <item row="9" column="0">
+     <widget class="QLabel" name="dif">
+      <property name="text">
+       <string>dif</string>
+      </property>
+     </widget>
+    </item>
+    <item row="9" column="1">
+     <widget class="QLabel" name="dif_val">
+      <property name="text">
+       <string/>
       </property>
      </widget>
     </item>

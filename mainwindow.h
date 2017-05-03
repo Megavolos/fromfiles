@@ -12,6 +12,11 @@
 #include <qwt_plot_panner.h>
 #include <qwt_scale_div.h>
 #include <qwt_plot_marker.h>
+#include <qwt_plot_picker.h>
+#include <qwt_picker_machine.h>
+#include <qmath.h>
+#include <qwt_painter.h>
+#include <angles.h>
 namespace Ui {
 class MainWindow;
 }
@@ -35,6 +40,9 @@ public:
     QVector<QwtPlotCurve*> curves;
     QVector<qreal> filter(QVector<qreal> *in, qreal coeff );
     QVector<qreal> integrate(QVector<qreal> *in, qreal zeroLevel);
+    QwtPlotPicker* picker;
+    bool front;
+
     qreal max[4];
     void resetAndPrepareData();
     void readdata();
@@ -57,6 +65,8 @@ private slots:
     void on_div3_returnPressed();
 
     void on_checkBox_2_toggled(bool checked);
+
+    void on_measureAngleButton_clicked();
 
 private:
     Ui::MainWindow *ui;

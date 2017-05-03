@@ -24,6 +24,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->qwtPlot->replot();
 
 
+
 }
 
 MainWindow::~MainWindow()
@@ -31,7 +32,6 @@ MainWindow::~MainWindow()
     delete ui;
     curves.clear();
     delete zoom_x;
-    delete zoom_y;
     delete grid;
 
 }
@@ -277,4 +277,139 @@ void MainWindow::on_checkBox_2_toggled(bool checked)
         reverseSignal();
         ui->qwtPlot->replot();
     }
+}
+
+void MainWindow::on_measureAngleButton_clicked()
+{
+
+    int min_x=0, max_x=0,min_y=0,max_y=0,skips=0,prev_x=0,prev_y=0;
+    QVector <qreal> result1;
+    QVector <qreal> degr1, degr2;
+    qreal trans=0;
+    qreal angle;
+    QPoint point1_1,point1_2,point3_1,point3_2;
+    QwtInterval interval;
+    interval = ui->qwtPlot->axisScaleDiv(QwtPlot::xBottom).interval();
+    max_x=(int)interval.maxValue();
+    min_x=(int)interval.minValue();
+    interval = ui->qwtPlot->axisScaleDiv(QwtPlot::yRight).interval();
+    max_y=(int)interval.maxValue();
+    min_y=(int)interval.minValue();
+    ui->degrees1->clear();
+    ui->degrees2->clear();
+    for (int i = min_x; i<max_x;i++)
+    {
+        if (skips) skips++;
+        if (ch1.at(i)>800 && point1_1.isNull())
+        {
+            skips++;
+            point1_1.setX(i);
+            point1_1.setY(ch1.at(i));
+            trans=ui->qwtPlot->canvasMap(QwtPlot::yRight).transform(point1_1.y());
+            point1_1.setY(trans);
+            trans=ui->qwtPlot->canvasMap(QwtPlot::xBottom).transform(point1_1.x());
+            point1_1.setX(trans);
+        }
+        if (ch1.at(i)>2800 && point1_2.isNull())
+        {
+            if (skips>40)
+            {
+                skips=0;
+                point1_2.setX(i);
+                point1_2.setY(ch1.at(i));
+                trans=ui->qwtPlot->canvasMap(QwtPlot::yRight).transform(point1_2.y());
+                point1_2.setY(trans);
+                trans=ui->qwtPlot->canvasMap(QwtPlot::xBottom).transform(point1_2.x());
+                point1_2.setX(trans);
+                result1.append((qreal)(point1_2.y()-point1_1.y())/(qreal)(point1_2.x()-point1_1.x()));
+                angle=qRadiansToDegrees(- qAtan(result1.at(result1.size()-1)));
+                degr1.append(angle);
+                ui->degrees1->setText(ui->degrees1->text() + " | " + QString::number(angle,'f',2));
+            }
+            else
+            {
+                skips=0;
+                point1_1.setX(0);
+                point1_1.setY(0);
+            }
+
+        }
+        if (prev_y>2000 && ch1.at(i) <10)
+        {
+            point1_1.setX(0);
+            point1_1.setY(0);
+            point1_2.setX(0);
+            point1_2.setY(0);
+        }
+        prev_y=ch1.at(i);
+
+    }
+    skips=0;
+    prev_y=0;
+    result1.clear();
+    for (int i = min_x; i<max_x;i++)
+    {
+        if (skips) skips++;
+        if (ch3.at(i)>800 && point3_1.isNull())
+        {
+            skips++;
+            point3_1.setX(i);
+            point3_1.setY(ch3.at(i));
+            trans=ui->qwtPlot->canvasMap(QwtPlot::yRight).transform(point3_1.y());
+            point3_1.setY(trans);
+            trans=ui->qwtPlot->canvasMap(QwtPlot::xBottom).transform(point3_1.x());
+            point3_1.setX(trans);
+        }
+        if (ch3.at(i)>2800 && point3_2.isNull())
+        {
+            if (skips>40)
+            {
+                skips=0;
+                point3_2.setX(i);
+                point3_2.setY(ch3.at(i));
+                trans=ui->qwtPlot->canvasMap(QwtPlot::yRight).transform(point3_2.y());
+                point3_2.setY(trans);
+                trans=ui->qwtPlot->canvasMap(QwtPlot::xBottom).transform(point3_2.x());
+                point3_2.setX(trans);
+                result1.append((qreal)(point3_2.y()-point3_1.y())/(qreal)(point3_2.x()-point3_1.x()));
+                angle=qRadiansToDegrees(- qAtan(result1.at(result1.size()-1)));
+                degr2.append(angle);
+                ui->degrees2->setText(ui->degrees2->text() + " | " + QString::number(angle,'f',2));
+            }
+            else
+            {
+                skips=0;
+                point3_1.setX(0);
+                point3_1.setY(0);
+            }
+
+        }
+        if (prev_y>2000 && ch3.at(i) <10)
+        {
+            point3_1.setX(0);
+            point3_1.setY(0);
+            point3_2.setX(0);
+            point3_2.setY(0);
+        }
+        prev_y=ch3.at(i);
+
+    }
+    uchar degrsize=0;
+    qreal absdif=0;
+    ui->dif_val->clear();
+    if (degr1.size()>degr2.size())
+    {
+        degrsize=degr2.size();
+    }
+    else
+    {
+        degrsize=degr1.size();
+    }
+    for (int i=0; i<degrsize;i++)
+    {
+        absdif = qAbs(degr1.at(i)-degr2.at(i));
+        ui->dif_val->setText(ui->dif_val->text() + " | " + QString::number(absdif,'f',3));
+
+    }
+
 }
